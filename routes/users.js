@@ -20,7 +20,7 @@ const verifyId = (req, res, next) => {
 
 const jwtVerify = (req, res, next) => {
 
-  jwt.verify(req.cookies.token, process.env.JWT_KEY, (err, _payload) => {
+  jwt.verify(req.cookies.token, process.env.TOKEN_SECRET, (err, _payload) => {
     if (err) {
       err.status = 401
       err.message = `Unauthorized`
@@ -32,7 +32,7 @@ const jwtVerify = (req, res, next) => {
   })
 }
 
-// GET ONE user
+// GET ONE USER
 router.get('/:id', verifyId, jwtVerify, (req, res, next) => {
   if (req.payload.id != req.params.id) {
     let err = new Error()
@@ -40,7 +40,9 @@ router.get('/:id', verifyId, jwtVerify, (req, res, next) => {
     err.message = "Unauthorized"
     return next(err)
   }
-  return userModel.getOneUser(req.params.id)
+  userModel.getOneUser(req.params.id)
+    .then(response => res.send(response))
+    .catch(err => next(err))
 })
 
 // router.post('/', function (req, res, next) {
