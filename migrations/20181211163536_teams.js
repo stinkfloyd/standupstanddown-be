@@ -4,10 +4,8 @@ exports.up = function (knex, Promise) {
     table.increments()
     table.string('name', 255).notNullable().defaultTo('')
     table.integer('creator_id').notNullable().defaultTo('')
-    //TODO:
-    /*
-      This is where I left off on Tuesday. My plan for the next step was to make creator_id a foriegn key.
-     */
+    table.integer(`creator_id`).notNullable()
+    table.foreign(`creator_id`).references(`users.id`).onDeconste(`CASCADE`)
     table.timestamps(true, true)
     // OR
     // table.dateTime('created_at').notNullable().defaultTo(knex.raw('now()'))
