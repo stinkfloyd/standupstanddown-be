@@ -37,7 +37,10 @@ app.use('/auth', authRouter)
 app.use((err, req, res, next) => {
   const status = err.status || 500
   res.status(status).json({
-    error: err
+    error: {
+      status: err.status,
+      message: err.message
+    }
   })
 })
 
