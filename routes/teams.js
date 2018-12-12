@@ -46,7 +46,7 @@ router.get('/:id', verifyId, jwtVerify, (req, res, next) => {
 })
 
 // POST A TEAM TO THE DATABASE
-router.post('/', jwtVerify, (req, res, next) => {
+router.post('/', (req, res, next) => {
   // Create the initial team
   let newTeam = {
     name: req.body.name,
