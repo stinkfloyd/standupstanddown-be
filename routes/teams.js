@@ -31,10 +31,18 @@ const jwtVerify = (req, res, next) => {
   })
 }
 
+// GET ALL TEAMS -> COMMENT OUT FOR PRODUCTION
+router.get('/', jwtVerify, (req, res, next) => {
+  teamModel.getAll()
+    .then(response => res.send(response))
+    .catch(err => next(err))
+})
+
 // GET ONE TEAM
 router.get('/:id', verifyId, jwtVerify, (req, res, next) => {
   teamModel.getOneTeam(req.params.id)
     .then(response => res.send(response))
+    .catch(err => next(err))
 })
 
 // POST A TEAM TO THE DATABASE
