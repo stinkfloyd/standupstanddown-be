@@ -11,6 +11,7 @@ const indexRouter = require('./routes/index')
 const authRouter = require('./routes/auth')
 const usersRouter = require('./routes/users')
 const teamsRouter = require('./routes/teams')
+const teams_usersRouter = require('./routes/teams_users')
 
 const app = express();
 
@@ -41,6 +42,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/auth', authRouter)
 app.use('/teams', teamsRouter)
+app.use('/teams_users', teams_usersRouter)
 
 // Error Handling Below
 app.use((err, req, res, next) => {
