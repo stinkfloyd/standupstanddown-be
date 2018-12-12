@@ -3,6 +3,7 @@ const router = express.Router();
 
 /* GET users listing. */
 router.get('/', function (req, res, next) {
+  console.log("req.cookies:", req.cookies)
   res.send('respond with a resource');
 });
 
