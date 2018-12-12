@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const userModel = require('../models/userModel.js')
+const teams_usersModel = require('../models/teams_usersModel.js')
 const jwt = require('jsonwebtoken')
 
 // Middleware Functions
@@ -19,7 +19,6 @@ const verifyId = (req, res, next) => {
 }
 
 const jwtVerify = (req, res, next) => {
-
   jwt.verify(req.cookies.token, process.env.TOKEN_SECRET, (err, _payload) => {
     if (err) {
       err.status = 401
@@ -32,28 +31,22 @@ const jwtVerify = (req, res, next) => {
   })
 }
 
-// GET ONE USER
-router.get('/:id', verifyId, (req, res, next) => {
-  // if (req.payload.id != req.params.id) {
-  //   let err = new Error()
-  //   err.status = 401
-  //   err.message = "Unauthorized"
-  //   return next(err)
-  // }
-  userModel.getOneUser(req.params.id)
+// GET ALL TEAMS 
+router.get('/', (req, res, next) => {
+  teams_usersModel.getAll()
     .then(response => res.send(response))
     .catch(err => next(err))
 })
 
-// router.post('/', function (req, res, next) {
-//   console.log('POSTED!');
-//   let newUser = {
-//     username: profile.username,
-//     githubId: profile.id,
-//     //photo: profile._json.avatar_url
-//   }
-//   userModel.create(newUser)
-//   res.send('POSTED!');
-// })
+// ADDS A USER TO A TEAM
+router.post('/:team_id/:user_id', function (req, res, next) {
+  console.log('POSTED!');
+  let newUser = {
+    team_id: req.params.team_id,
+    user_id: req.params.user_id,
+  }
+  teams_usersModel.create(newUser)
+    .then(response => res.send(response))
+})
 
 module.exports = router

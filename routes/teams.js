@@ -39,7 +39,7 @@ router.get('/', jwtVerify, (req, res, next) => {
 })
 
 // GET ONE TEAM
-router.get('/:id', verifyId, jwtVerify, (req, res, next) => {
+router.get('/:id', verifyId, (req, res, next) => {
   teamModel.getOneTeam(req.params.id)
     .then(response => res.send(response))
     .catch(err => next(err))
@@ -56,6 +56,8 @@ router.post('/', (req, res, next) => {
   teamModel.create(newTeam)
     .then(response => res.send(response))
     .catch(err => next(err))
+
+  // NEED TO ADD CREATOR TO THE TEAMS_USERS
 })
 
 // DELETE A TEAM
