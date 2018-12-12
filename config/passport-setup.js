@@ -14,14 +14,6 @@ passport.use(
   },
     // passport call back function
     (accessToken, refreshToken, profile, done) => {
-      // accessToken: token we get from GitHub
-      // refreshToken: refreshes accessToken when it expires
-      // profile: takes the code we get back, and brings back the profile info
-      // done: we need to call when we are done with this callback
-
-      // console.log('passport callback function fired')
-      // console.log(profile.login)
-
       // Check if user is in our psql db, if not, make them
       console.log(`profile: `, profile)
       userModel.checkUser(profile._json.id)
@@ -50,10 +42,6 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser((id, done) => {
   userModel.checkUser(id)
     .then((user) => {
-      // console.log('deser ', user)
-      // Do some passport session stuff,
-      // then some cookie session stuff 😬😱
       done(null, user)
-      // Then we go to the callbackURL 🛫
     })
 })
