@@ -2,21 +2,6 @@ const router = require('express').Router();
 const passport = require('passport');
 const jwt = require('jsonwebtoken')
 
-/* 
- *  OAuth login 
- */
-router.get('/login', (req, res) => {
-  // res.render('profile', { user: req.user });
-  res.sendfile('./public/login.html');
-});
-
-/* 
- *  OAuth login 
- */
-router.get('/logout', (req, res) => {
-  req.logout();
-  res.redirect('/');
-});
 
 // auth with github
 // Use Passport with the github strategy that we attached to it in config
@@ -36,8 +21,8 @@ router.get('/github/callback', passport.authenticate('github'), (req, res) => {
     loggedIn: true,
   }
   let token = jwt.sign(payLoad, process.env.TOKEN_SECRET)
-  res.cookie("token", token, {
-    expires: new Date(Date.now() + 9000000) // TODO:: FIGURE OUT SOME REAL TIME?
+  res.cookie("token", 'http://localhost:8080', token, {
+    expires: new Date(Date.now() + 900000) // 15 minutes
   })
   res.redirect('/');
 });
