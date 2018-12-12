@@ -10,6 +10,7 @@ const passportSetup = require('./config/passport-setup')
 const indexRouter = require('./routes/index')
 const authRouter = require('./routes/auth')
 const usersRouter = require('./routes/users')
+const teamsRouter = require('./routes/teams')
 
 const app = express();
 
@@ -32,6 +33,7 @@ app.use(passport.session())
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/auth', authRouter)
+app.use('/teams', teamsRouter)
 
 // Error Handling Below
 app.use((err, req, res, next) => {
