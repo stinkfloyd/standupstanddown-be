@@ -32,14 +32,14 @@ const jwtVerify = (req, res, next) => {
 }
 
 // GET ALL TEAMS 
-router.get('/', (req, res, next) => {
+router.get('/', jwtVerify, (req, res, next) => {
   teams_usersModel.getAll()
     .then(response => res.send(response))
     .catch(err => next(err))
 })
 
 // ADDS A USER TO A TEAM
-router.post('/:team_id/:user_id', function (req, res, next) {
+router.post('/:team_id/:user_id', jwtVerify, (req, res, next) => {
   console.log('POSTED!');
   let newUser = {
     team_id: req.params.team_id,

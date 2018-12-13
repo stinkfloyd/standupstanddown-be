@@ -15,12 +15,6 @@ const teams_usersRouter = require('./routes/teams_users')
 
 const app = express();
 
-// set up session cookies
-app.use(cookieSession({
-  maxAge: 24 * 60 * 60 * 1000,
-  keys: [process.env.COOKIE_SECRET]
-}))
-
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

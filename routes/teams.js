@@ -33,8 +33,12 @@ const jwtVerify = (req, res, next) => {
 
 // GET ALL TEAMS -> COMMENT OUT FOR PRODUCTION
 router.get('/', jwtVerify, (req, res, next) => {
+  console.log('GETTEAMS')
   teamModel.getAll()
-    .then(response => res.send(response))
+    .then(response => {
+      console.log("Sending Response: ", response);
+      res.send(response)
+    })
     .catch(err => next(err))
 })
 
