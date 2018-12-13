@@ -27,33 +27,24 @@ const jwtVerify = (req, res, next) => {
       return next(err);
     } else {
       req.payload = _payload
+      console.log("req.payload: ", req.payload);
+
       next()
     }
   })
 }
 
 // GET ONE USER
-router.get('/:id', verifyId, (req, res, next) => {
-  // if (req.payload.id != req.params.id) {
-  //   let err = new Error()
-  //   err.status = 401
-  //   err.message = "Unauthorized"
-  //   return next(err)
-  // }
+router.get('/:id', verifyId, jwtVerify, (req, res, next) => {
+  if (req.payload.id !== req.params.id) {
+    let err = new Error()
+    err.status = 401
+    err.message = "Unauthorized"
+    return next(err)
+  }
   userModel.getOneUser(req.params.id)
     .then(response => res.send(response))
     .catch(err => next(err))
 })
-
-// router.post('/', function (req, res, next) {
-//   console.log('POSTED!');
-//   let newUser = {
-//     username: profile.username,
-//     githubId: profile.id,
-//     //photo: profile._json.avatar_url
-//   }
-//   userModel.create(newUser)
-//   res.send('POSTED!');
-// })
 
 module.exports = router

@@ -39,7 +39,7 @@ router.get('/', jwtVerify, (req, res, next) => {
 })
 
 // ADDS A USER TO A TEAM
-router.post('/:team_id/:user_id', jwtVerify, (req, res, next) => {
+router.post('/:team_id/:user_id', verifyId, jwtVerify, (req, res, next) => {
   console.log('POSTED!');
   let newUser = {
     team_id: req.params.team_id,
@@ -47,6 +47,11 @@ router.post('/:team_id/:user_id', jwtVerify, (req, res, next) => {
   }
   teams_usersModel.create(newUser)
     .then(response => res.send(response))
+})
+
+// DELETE A USER FROM A TEAM IF TEAM OWNER
+router.delete('/:team_id/:user_id', verifyId, jwtVerify, (req, res, next) => {
+
 })
 
 module.exports = router

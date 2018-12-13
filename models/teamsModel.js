@@ -26,6 +26,17 @@ const getOneTeam = (id) => {
     })
 }
 
+// Edits the given ID's team name
+const editName = (id, body) => {
+  console.log("body: ", body)
+  return knex('teams')
+    .where('id', id)
+    .update(body)
+    .returning('*')
+    .then(team => team[0])
+    .catch(err => Promise.reject(err))
+}
+
 // Deletes a team with the given ID
 const deleteOne = (id) => {
   return knex('teams')
@@ -40,5 +51,6 @@ module.exports = {
   getAll,
   create,
   getOneTeam,
-  deleteOne
+  deleteOne,
+  editName
 }
