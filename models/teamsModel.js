@@ -17,12 +17,14 @@ const create = (body) => {
 }
 
 // Returns the team with the given ID
-const getOneTeam = (id) => {
+const getOneTeam = (id, next) => {
   return knex('teams')
     .where('id', id)
-    .then(team => team[0])
+    .then((team) => {
+      return team
+    })
     .catch((err) => {
-      Promise.reject(err)
+      next(err)
     })
 }
 
@@ -38,13 +40,13 @@ const editName = (id, body) => {
 }
 
 // Deletes a team with the given ID
-const deleteOne = (id) => {
+const deleteOne = (id, next) => {
   return knex('teams')
     .where('id', id)
     .del()
     .returning('*')
-    .then(team => team[0])
-    .catch(err => Promise.reject(err))
+    .then(team => team)
+    .catch(err => next(err))
 }
 
 module.exports = {

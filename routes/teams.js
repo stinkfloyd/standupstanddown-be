@@ -19,6 +19,7 @@ const verifyId = (req, res, next) => {
 }
 
 const jwtVerify = (req, res, next) => {
+  console.log(req.cookies.token)
   jwt.verify(req.cookies.token, process.env.TOKEN_SECRET, (err, _payload) => {
     if (err) {
       err.status = 401
@@ -32,7 +33,7 @@ const jwtVerify = (req, res, next) => {
 }
 
 // GET ALL TEAMS -> COMMENT OUT FOR PRODUCTION
-router.get('/', jwtVerify, (req, res, next) => {
+router.get('/', (req, res, next) => {
   teamModel.getAll()
     .then(response => res.send(response))
     .catch(err => next(err))
@@ -40,7 +41,7 @@ router.get('/', jwtVerify, (req, res, next) => {
 
 // GET ONE TEAM
 router.get('/:id', verifyId, jwtVerify, (req, res, next) => {
-  teamModel.getOneTeam(req.params.id)
+  teamModel.getOneTeam(req.params.id, next)
     .then(response => {
       if (req.payload.id !== response.creator_id) {
         let err = new Error()
@@ -60,10 +61,9 @@ router.post('/', jwtVerify, (req, res, next) => {
   let newTeam = {
     name: req.body.name,
     creator_id: req.body.creator_id,
-    //photo: profile._json.avatar_url
   }
   teamModel.create(newTeam)
-    .then(response => res.send(response))
+    .then(response => { console.log(response); res.send(response) })
     .catch(err => next(err))
 
   /*
@@ -73,8 +73,9 @@ router.post('/', jwtVerify, (req, res, next) => {
 
 // DELETE A TEAM
 router.delete('/:id', verifyId, jwtVerify, (req, res, next) => {
-  teamModel.getOneTeam(req.params.id)
-    .then(response => {
+  teamModel.getOneTeam(req.params.id, next)
+    .then((response) => {
+      console.log("response: ", response);
       if (response.creator_id === req.payload.id) {
         teamModel.deleteOne(req.params.id)
           .then(response => res.send(response))

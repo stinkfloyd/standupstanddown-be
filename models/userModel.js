@@ -41,7 +41,6 @@ const deleteOne = (id) => {
   return knex('users')
     .where('id', id)
     .del()
-    .returning('*')
     .then(user => user[0])
     .catch(err => Promise.reject(err))
 }
