@@ -12,6 +12,8 @@ const authRouter = require('./routes/auth')
 const usersRouter = require('./routes/users')
 const teamsRouter = require('./routes/teams')
 const teams_usersRouter = require('./routes/teams_users')
+const sprintsRouter = require('./routes/sprints')
+const dailiesRouter = require('./routes/dailies')
 
 const app = express();
 
@@ -38,6 +40,8 @@ app.use('/users', usersRouter);
 app.use('/auth', authRouter)
 app.use('/teams', teamsRouter)
 app.use('/teams_users', teams_usersRouter)
+app.use('/sprints', sprintsRouter)
+app.use('/dailies', dailiesRouter)
 
 // Error Handling Below
 app.use((err, req, res, next) => {

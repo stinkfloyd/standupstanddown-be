@@ -1,4 +1,4 @@
-const dailiesModel = require('../models/dailiessModel.js')
+const dailiesModel = require('../models/dailiesModel.js')
 const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken')
@@ -56,9 +56,7 @@ router.post('/', jwtVerify, (req, res, next) => {
   // Create the initial dailies
   let newDaily = {
     name: req.body.name,
-    // which id do we need here instead of creator_id
-    creator_id: req.body.creator_id,
-    //photo: profile._json.avatar_url
+    user_id: req.body.user_id,
   }
   dailiesModel.create(newDaily)
     .then(response => res.send(response))

@@ -1,4 +1,4 @@
-const sprintsModel = require('../models/sprintssModel.js')
+const sprintsModel = require('../models/sprintsModel.js')
 const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken')
