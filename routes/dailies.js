@@ -62,9 +62,6 @@ router.post('/', jwtVerify, (req, res, next) => {
     .then(response => res.send(response))
     .catch(err => next(err))
 
-  /*
-   *  TODO:: NEED TO ADD CREATOR TO THE dailiesS_USERS
-   */
 })
 
 // DELETE A dailies
