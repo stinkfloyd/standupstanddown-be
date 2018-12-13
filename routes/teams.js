@@ -33,24 +33,29 @@ const jwtVerify = (req, res, next) => {
 
 // GET ALL TEAMS -> COMMENT OUT FOR PRODUCTION
 router.get('/', jwtVerify, (req, res, next) => {
-  console.log('GETTEAMS')
   teamModel.getAll()
-    .then(response => {
-      console.log("Sending Response: ", response);
-      res.send(response)
-    })
+    .then(response => res.send(response))
     .catch(err => next(err))
 })
 
 // GET ONE TEAM
 router.get('/:id', verifyId, jwtVerify, (req, res, next) => {
   teamModel.getOneTeam(req.params.id)
-    .then(response => res.send(response))
+    .then(response => {
+      if (req.payload.id !== response.creator_id) {
+        let err = new Error()
+        err.status = 401
+        err.message = `Unauthorized - Not Team Creator`
+        return next(err);
+      } else {
+        res.send(response)
+      }
+    })
     .catch(err => next(err))
 })
 
 // POST A TEAM TO THE DATABASE
-router.post('/', (req, res, next) => {
+router.post('/', jwtVerify, (req, res, next) => {
   // Create the initial team
   let newTeam = {
     name: req.body.name,
@@ -61,14 +66,16 @@ router.post('/', (req, res, next) => {
     .then(response => res.send(response))
     .catch(err => next(err))
 
-  // NEED TO ADD CREATOR TO THE TEAMS_USERS
+  /*
+   *  TODO:: NEED TO ADD CREATOR TO THE TEAMS_USERS
+   */
 })
 
 // DELETE A TEAM
 router.delete('/:id', verifyId, jwtVerify, (req, res, next) => {
   teamModel.getOneTeam(req.params.id)
     .then(response => {
-      if (response.creator_id === req.cookies.id) {
+      if (response.creator_id === req.payload.id) {
         teamModel.deleteOne(req.params.id)
           .then(response => res.send(response))
           .catch(err => next(err))
@@ -80,4 +87,28 @@ router.delete('/:id', verifyId, jwtVerify, (req, res, next) => {
       }
     })
 })
+
+// EDIT A TEAM NAME
+router.put('/:id', verifyId, jwtVerify, async (req, res, next) => {
+  if (!req.body.name) {
+    let err = new Error()
+    err.status = 403
+    err.message = `No name given.`
+    next(err)
+  } else {
+    let team = await teamModel.getOneTeam(req.params.id)
+    if (team.creator_id !== req.payload.id) {
+      let err = new Error()
+      err.status = 401
+      err.message = `Unauthorized - Not Team Creator`
+      next(err)
+    } else {
+      let newTeam = { ...team, name: req.body.name }
+      teamModel.editName(req.params.id, newTeam)
+        .then(response => res.send(response))
+        .catch(err => Promise.reject(err))
+    }
+  }
+})
+
 module.exports = router

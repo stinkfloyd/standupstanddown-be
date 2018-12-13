@@ -26,18 +26,19 @@ const getOneTeam = (id) => {
     })
 }
 
-// Deletes a team with the given ID
-// const deleteOne = (id) => {
-//   return knex('teams')
-//     .where('id', id)
-//     .del()
-//     .returning('*')
-//     .then(team => team[0])
-//     .catch(err => Promise.reject(err))
-// }
+// Deletes a user from a team
+const removeUser = (team_id, user_id) => {
+  return knex('teams')
+    .where('team_id', team_id)
+    .andWhere('user_id', user_id)
+    .del()
+    .then(response => response)
+    .catch(err => Promise.reject(err))
+}
 
 module.exports = {
   getAll,
   create,
-  getOneTeam
+  getOneTeam,
+  removeUser
 }
