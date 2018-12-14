@@ -7,7 +7,7 @@ exports.up = function (knex, Promise) {
     table.string('username', 255).notNullable().defaultTo('')
     table.string('email', 255).notNullable().defaultTo('')
     // This needs testing.
-    //table.string('photo', 255).notNullable().defaultTo('')
+    table.string('photo', 255).notNullable().defaultTo('')
     table.string('bio', 255).notNullable().defaultTo('')
     table.integer('githubId').notNullable()
     table.timestamps(true, true)

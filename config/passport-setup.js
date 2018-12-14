@@ -26,7 +26,7 @@ passport.use(
             let newUser = {
               username: profile.username,
               githubId: profile.id,
-              //photo: profile._json.avatar_url
+              photo: profile._json.avatar_url
             }
             userModel.create(newUser)
             done(null, newUser)

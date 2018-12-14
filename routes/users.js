@@ -32,16 +32,26 @@ const jwtVerify = (req, res, next) => {
   })
 }
 
+// GET ALL TEAMS 
+router.get('/', (req, res, next) => {
+  userModel.getAll()
+    .then(response => res.send(response))
+    .catch(err => next(err))
+})
+
 // GET ONE USER
 router.get('/:id', verifyId, jwtVerify, (req, res, next) => {
-  if (req.payload.id !== req.params.id) {
+  console.log("req.payload.id:", req.payload.id )
+  if (req.payload.id !== +(req.params.id)) {
     let err = new Error()
     err.status = 401
     err.message = "Unauthorized - Cannot request other users"
     return next(err)
   }
   userModel.getOneUser(req.params.id)
-    .then(response => res.send(response))
+    .then(((response) => {
+      return res.send(response)
+    }))
     .catch(err => next(err))
 })
 
