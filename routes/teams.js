@@ -25,9 +25,11 @@ const jwtVerify = (req, res, next) => {
     if (err) {
       err.status = 401
       err.message = `Unauthorized - Bad JWT Token cookie`
+      console.log("about to return error")
       return next(err);
     } else {
       req.payload = _payload
+      console.log("about to return next ")
       next()
     }
   })
@@ -90,6 +92,7 @@ router.post('/', (req, res, next) => {
 router.delete('/:id', verifyId, jwtVerify, (req, res, next) => {
   teamModel.getOneTeam(req.params.id, next)
     .then((response) => {
+      console.log("in response router delete:", response)
       if (response.creator_id === req.payload.id) {
         teamModel.deleteOne(req.params.id)
           .then(response => res.send(response))

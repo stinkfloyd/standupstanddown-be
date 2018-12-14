@@ -21,7 +21,7 @@ const getOneTeam = (id, next) => {
   return knex('teams')
     .where('id', id)
     .then((team) => {
-      return team
+      return team[0]
     })
     .catch((err) => {
       next(err)
