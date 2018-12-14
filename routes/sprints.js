@@ -47,7 +47,9 @@ router.get('/', (req, res, next) => {
 // GET ONE daily
 router.get('/:id', verifyId, jwtVerify, (req, res, next) => {
   sprintsModel.getOneSprint(req.params.id)
-    .then(response => res.send(response))
+    .then((response) => {
+      res.send(response)
+    })
     .catch(err => next(err))
 })
 
