@@ -44,9 +44,9 @@ router.get('/', (req, res, next) => {
     .catch(err => next(err))
 })
 
-// GET ONE daily
-router.get('/:id', verifyId, jwtVerify, (req, res, next) => {
-  sprintsModel.getOneSprint(req.params.id)
+// Gets all the sprints associated with the given team_id
+router.get('/:team_id', verifyId, jwtVerify, (req, res, next) => {
+  sprintsModel.getOneTeamsSprints(req.params.team_id)
     .then((response) => {
       res.send(response)
     })
@@ -73,7 +73,7 @@ router.post('/', jwtVerify, (req, res, next) => {
 
 // DELETE A sprints
 router.delete('/:id', verifyId, jwtVerify, (req, res, next) => {
-  sprintsModel.getOneSprint(req.params.id)
+  sprintsModel.getOneTeamsSprints(req.params.id)
     .then(response => {
       if (response.user_id === req.payload.id) {
         sprintsModel.deleteOne(req.params.id)
