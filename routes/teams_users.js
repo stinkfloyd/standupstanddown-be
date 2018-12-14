@@ -40,22 +40,33 @@ router.get('/', jwtVerify, (req, res, next) => {
     .catch(err => next(err))
 })
 
+// GET ONE TEAMS USERS
+router.get('/:team_id', (req, res, next) => {
+  teams_usersModel.getOneTeam(req.params.team_id)
+    .then((response) => {
+      res.send(response)
+    })
+    .catch(err => {
+      next(err)
+    })
+})
+
 // ADDS A USER TO A TEAM
-router.post('/:team_id/:user_id', verifyId, jwtVerify, (req, res, next) => {
+router.post('/:team_id/:user_id', verifyId, (req, res, next) => {
   teamsModel.getOneTeam(req.params.team_id)
     .then((response) => {
-      if (req.payload.id !== response[0].creator_id) {
-        let err = new Error()
-        err.status = 403
-        err.message = 'Forbidden - Not the Team Creator'
-      } else {
-        let newUser = {
-          team_id: req.params.team_id,
-          user_id: req.params.user_id,
-        }
-        teams_usersModel.create(newUser)
-          .then(response => res.send(response))
+      // if (req.payload.id !== response[0].creator_id) {
+      //   let err = new Error()
+      //   err.status = 403
+      //   err.message = 'Forbidden - Not the Team Creator'
+      // } else {
+      let newUser = {
+        team_id: req.params.team_id,
+        user_id: req.params.user_id,
       }
+      teams_usersModel.create(newUser)
+        .then(response => res.send(response))
+      // }
     })
     .catch(err => next(err))
 })

@@ -45,11 +45,27 @@ const addOwnerToTeam = async (req, res, next) => {
     .then(response => res.send(response))
 }
 
-// GET ALL TEAMS -> COMMENT OUT FOR PRODUCTION
-router.get('/', (req, res, next) => {
+const checkName = async (req, res, next) => {
+  console.log("req.params.name: ", req.params.name.toLowerCase())
+  await teamModel.checkName(req.params.name.toLowerCase())
+    .then((response) => {
+      if (response) {
+        req.team = response
+      }
+      next()
+    })
+}
+
+// GET ALL TEAMS 
+router.get('/', jwtVerify, (req, res, next) => {
   teamModel.getAll()
     .then(response => res.send(response))
     .catch(err => next(err))
+})
+
+router.post('/new_member/:name', checkName, jwtVerify, (req, res, next) => {
+  console.log('req.team: ', req.team)
+  console.log('POSTED!')
 })
 
 // GET ONE TEAM
@@ -69,15 +85,20 @@ router.get('/:id', verifyId, jwtVerify, (req, res, next) => {
 })
 
 // POST A TEAM TO THE DATABASE
-router.post('/', (req, res, next) => {
+router.post('/:name', checkName, jwtVerify, (req, res, next) => {
+  if (req.team) {
+    let err = new Error()
+    err.status = 401
+    err.message = "Team Name already exists"
+    return next(err)
+  }
   // Create the initial team
   let newTeam = {
-    name: req.body.name,
+    name: req.body.name.toLowerCase(),
     creator_id: req.body.creator_id,
   }
   teamModel.create(newTeam)
     .then((response) => {
-      console.log('response: ', response)
       if (!response) {
         return next(response)
       } else {
@@ -114,7 +135,10 @@ router.put('/:id', verifyId, jwtVerify, async (req, res, next) => {
     err.message = `No name given.`
     next(err)
   } else {
+
     let team = await teamModel.getOneTeam(req.params.id)
+    let nameCheck = await teamModel.checkName(req.body.name)
+    console.log("nameCheck: ", nameCheck);
     if (team.creator_id !== req.payload.id) {
       let err = new Error()
       err.status = 401
@@ -123,7 +147,9 @@ router.put('/:id', verifyId, jwtVerify, async (req, res, next) => {
     } else {
       let newTeam = { ...team, name: req.body.name }
       teamModel.editName(req.params.id, newTeam)
-        .then(response => res.send(response))
+        .then((response) => {
+          res.send(response)
+        })
         .catch(err => next(err))
     }
   }
