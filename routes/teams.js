@@ -43,11 +43,24 @@ const addOwnerToTeam = async (req, res, next) => {
     .then(response => res.send(response))
 }
 
-// GET ALL TEAMS -> COMMENT OUT FOR PRODUCTION
-router.get('/', (req, res, next) => {
+const checkName = async (req, res, next) => {
+  console.log("req.params.name: ", req.params.name)
+  await teamModel.checkName(req.params.name)
+    .then((response) => {
+      console.log(response)
+      next()
+    })
+}
+
+// GET ALL TEAMS 
+router.get('/', jwtVerify, (req, res, next) => {
   teamModel.getAll()
     .then(response => res.send(response))
     .catch(err => next(err))
+})
+
+router.post('/new_member/:name', checkName, (req, res, next) => {
+  console.log('POSTED!')
 })
 
 // GET ONE TEAM
@@ -75,7 +88,6 @@ router.post('/', (req, res, next) => {
   }
   teamModel.create(newTeam)
     .then((response) => {
-      console.log('response: ', response)
       if (!response) {
         return next(response)
       } else {

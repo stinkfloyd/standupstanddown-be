@@ -49,10 +49,22 @@ const deleteOne = (id, next) => {
     .catch(err => next(err))
 }
 
+// Returns the team with the given name
+const checkName = (name) => {
+  console.log('checkName name: ', name);
+  return knex('teams')
+    .where('name', name)
+    .then(user => user[0])
+    .catch((err) => {
+      Promise.reject(err)
+    })
+}
+
 module.exports = {
   getAll,
   create,
   getOneTeam,
   deleteOne,
-  editName
+  editName,
+  checkName
 }

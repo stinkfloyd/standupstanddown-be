@@ -38,7 +38,7 @@ const jwtVerify = (req, res, next) => {
 }
 
 // GET ALL sprints -> COMMENT OUT FOR PRODUCTION
-router.get('/', jwtVerify, (req, res, next) => {
+router.get('/', (req, res, next) => {
   sprintsModel.getAll()
     .then(response => res.send(response))
     .catch(err => next(err))
