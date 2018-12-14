@@ -23,12 +23,10 @@ const jwtVerify = (req, res, next) => {
   jwt.verify(req.cookies.token, process.env.TOKEN_SECRET, (err, _payload) => {
     if (err) {
       err.status = 401
-      err.message = `Unauthorized`
+      err.message = `Unauthorized - Bad JWT Token cookie`
       return next(err);
     } else {
       req.payload = _payload
-      console.log("req.payload: ", req.payload);
-
       next()
     }
   })
@@ -39,7 +37,7 @@ router.get('/:id', verifyId, jwtVerify, (req, res, next) => {
   if (req.payload.id !== req.params.id) {
     let err = new Error()
     err.status = 401
-    err.message = "Unauthorized"
+    err.message = "Unauthorized - Cannot request other users"
     return next(err)
   }
   userModel.getOneUser(req.params.id)
