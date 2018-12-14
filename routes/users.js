@@ -19,7 +19,6 @@ const verifyId = (req, res, next) => {
 }
 
 const jwtVerify = (req, res, next) => {
-
   jwt.verify(req.cookies.token, process.env.TOKEN_SECRET, (err, _payload) => {
     if (err) {
       err.status = 401

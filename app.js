@@ -31,6 +31,7 @@ app.use(function (req, res, next) {
   next();
 });
 
+
 // Middleware to initizilize passport & session
 app.use(passport.initialize())
 app.use(passport.session())
