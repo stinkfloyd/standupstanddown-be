@@ -20,6 +20,7 @@ const create = (body) => {
 const getOneTeamsSprints = (team_id) => {
   return knex('sprints')
     .where('team_id', team_id)
+    .orderBy('id', 'desc')
     .then(sprint => sprint)
     .catch((err) => {
       Promise.reject(err)
