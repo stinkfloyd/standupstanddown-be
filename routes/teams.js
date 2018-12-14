@@ -44,10 +44,12 @@ const addOwnerToTeam = async (req, res, next) => {
 }
 
 const checkName = async (req, res, next) => {
-  console.log("req.params.name: ", req.params.name)
-  await teamModel.checkName(req.params.name)
+  console.log("req.params.name: ", req.params.name.toLowerCase())
+  await teamModel.checkName(req.params.name.toLowerCase())
     .then((response) => {
-      console.log(response)
+      if (response) {
+        req.team = response
+      }
       next()
     })
 }
@@ -59,7 +61,8 @@ router.get('/', jwtVerify, (req, res, next) => {
     .catch(err => next(err))
 })
 
-router.post('/new_member/:name', checkName, (req, res, next) => {
+router.post('/new_member/:name', checkName, jwtVerify, (req, res, next) => {
+  console.log('req.team: ', req.team)
   console.log('POSTED!')
 })
 
@@ -80,10 +83,16 @@ router.get('/:id', verifyId, jwtVerify, (req, res, next) => {
 })
 
 // POST A TEAM TO THE DATABASE
-router.post('/', (req, res, next) => {
+router.post('/:name', checkName, jwtVerify, (req, res, next) => {
+  if (req.team) {
+    let err = new Error()
+    err.status = 401
+    err.message = "Team Name already exists"
+    return next(err)
+  }
   // Create the initial team
   let newTeam = {
-    name: req.body.name,
+    name: req.body.name.toLowerCase(),
     creator_id: req.body.creator_id,
   }
   teamModel.create(newTeam)
@@ -123,7 +132,10 @@ router.put('/:id', verifyId, jwtVerify, async (req, res, next) => {
     err.message = `No name given.`
     next(err)
   } else {
+
     let team = await teamModel.getOneTeam(req.params.id)
+    let nameCheck = await teamModel.checkName(req.body.name)
+    console.log("nameCheck: ", nameCheck);
     if (team.creator_id !== req.payload.id) {
       let err = new Error()
       err.status = 401
@@ -132,7 +144,9 @@ router.put('/:id', verifyId, jwtVerify, async (req, res, next) => {
     } else {
       let newTeam = { ...team, name: req.body.name }
       teamModel.editName(req.params.id, newTeam)
-        .then(response => res.send(response))
+        .then((response) => {
+          res.send(response)
+        })
         .catch(err => next(err))
     }
   }

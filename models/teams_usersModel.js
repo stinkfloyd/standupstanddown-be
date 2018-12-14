@@ -18,9 +18,9 @@ const create = (body) => {
 
 // Returns the team with the given ID
 const getOneTeam = (id) => {
-  return knex('teams_users/:id')
+  return knex('teams_users')
     .where('team_id', id)
-    .then(team => team[0])
+    .then(team => team)
     .catch((err) => {
       Promise.reject(err)
     })
