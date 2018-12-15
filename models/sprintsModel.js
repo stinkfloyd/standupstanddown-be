@@ -9,10 +9,11 @@ const getAll = () => {
 
 // Creates a team from the given object
 const create = (body) => {
+  console.log('body', body)
   return knex('sprints')
     .insert(body)
     .returning('*')
-    .then(sprint => sprint[0])
+    .then(sprint => sprint)
     .catch(err => Promise.reject(err))
 }
 
