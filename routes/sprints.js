@@ -55,15 +55,18 @@ router.get('/:team_id', verifyId, jwtVerify, (req, res, next) => {
 
 // POST A sprints TO THE DATABASE
 router.post('/:team_id', (req, res, next) => {
+  console.log('req.params.team_id: ', req.params.team_id)
   // Create the initial sprints
   let newSprint = {
     sprint_length: req.body.sprint_length,
     sprint_goal: req.body.sprint_goal,
-    sprint_notes: req.body.sprint_notes,
+    sprint_notes: '',
     team_id: req.params.team_id
   }
   sprintsModel.create(newSprint)
-    .then(response => res.send(response))
+    .then((response) => {
+      res.send(response)
+    })
     .catch(err => next(err))
 })
 
