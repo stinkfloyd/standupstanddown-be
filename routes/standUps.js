@@ -1,11 +1,11 @@
-const dailiesModel = require('../models/dailiesModel.js')
+const standUpsModel = require('../models/standUpsModel.js')
 const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken')
 
 /**
  * 
- * Dailies Routes call the dailiesModel
+ * standUps Routes call the standUpsModel
  * 
  */
 
@@ -37,51 +37,51 @@ const jwtVerify = (req, res, next) => {
   })
 }
 
-// GET ALL dailiesS -> COMMENT OUT FOR PRODUCTION
+// GET ALL standUpsS -> COMMENT OUT FOR PRODUCTION
 router.get('/', jwtVerify, (req, res, next) => {
-  dailiesModel.getAll()
+  standUpsModel.getAll()
     .then(response => res.send(response))
     .catch(err => next(err))
 })
 
-// GET ONE daily
+// GET ONE standUp
 router.get('/:id', verifyId, jwtVerify, (req, res, next) => {
-  dailiesModel.getOnedaily(req.params.id)
+  standUpsModel.getOnestandUp(req.params.id)
     .then(response => res.send(response))
     .catch(err => next(err))
 })
 
-// POST A dailies TO THE DATABASE
+// POST A standUps TO THE DATABASE
 router.post('/', jwtVerify, (req, res, next) => {
-  // Create the initial dailies
-  let newDaily = {
+  // Create the initial standUps
+  let newStandUp = {
     name: req.body.name,
     user_id: req.body.user_id,
   }
-  dailiesModel.create(newDaily)
+  standUpsModel.create(newStandUp)
     .then(response => res.send(response))
     .catch(err => next(err))
 
 })
 
-// DELETE A dailies
+// DELETE A standUps
 router.delete('/:id', verifyId, jwtVerify, (req, res, next) => {
-  dailiesModel.getOnedailies(req.params.id)
+  standUpsModel.getOnestandUps(req.params.id)
     .then(response => {
       if (response.user_id === req.payload.id) {
-        dailiesModel.deleteOne(req.params.id)
+        standUpsModel.deleteOne(req.params.id)
           .then(response => res.send(response))
           .catch(err => next(err))
       } else {
         let err = new Error()
         err.status = 401
-        err.message = `Unauthorized - Not dailies Creator`
+        err.message = `Unauthorized - Not standUps Creator`
         next(err)
       }
     })
 })
 
-// EDIT A dailies NAME
+// EDIT A standUps NAME
 router.put('/:id', verifyId, jwtVerify, async (req, res, next) => {
   if (!req.body.name) {
     let err = new Error()
@@ -89,15 +89,15 @@ router.put('/:id', verifyId, jwtVerify, async (req, res, next) => {
     err.message = `No name given.`
     next(err)
   } else {
-    let dailies = await dailiesModel.getOneDaily(req.params.id)
-    if (dailies.user_id !== req.payload.id) {
+    let standUps = await standUpsModel.getOnestandUp(req.params.id)
+    if (standUps.user_id !== req.payload.id) {
       let err = new Error()
       err.status = 401
-      err.message = `Unauthorized - Not dailies Creator`
+      err.message = `Unauthorized - Not standUps Creator`
       next(err)
     } else {
-      let newDaily = { ...dailies, name: req.body.name }
-      dailiesModel.editName(req.params.id, newDaily)
+      let newStandUp = { ...standUps, name: req.body.name }
+      standUpsModel.editName(req.params.id, newStandUp)
         .then(response => res.send(response))
         .catch(err => Promise.reject(err))
     }
