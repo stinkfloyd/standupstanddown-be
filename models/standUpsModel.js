@@ -11,7 +11,9 @@ const create = (body) => {
   return knex('standups')
     .insert(body)
     .returning('*')
-    .then(standUp => standUp[0])
+    .then((standUp) => {
+      return standUp
+    })
     .catch(err => Promise.reject(err))
 }
 

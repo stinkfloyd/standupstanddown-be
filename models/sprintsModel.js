@@ -17,6 +17,14 @@ const create = (body) => {
     .catch(err => Promise.reject(err))
 }
 
+const getOneSprint = (id) => {
+  return knex('sprints')
+    .where('id', id)
+    .returning('*')
+    .then(sprint => sprint)
+    .catch(err => Promise.reject(err))
+}
+
 // Returns the team with the given ID
 const getOneTeamsSprints = (team_id) => {
   return knex('sprints')
@@ -54,5 +62,6 @@ module.exports = {
   create,
   getOneTeamsSprints,
   deleteOne,
-  editName
+  editName,
+  getOneSprint
 }
