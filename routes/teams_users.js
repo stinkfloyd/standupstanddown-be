@@ -56,7 +56,7 @@ router.post('/', jwtVerify, (req, res, next) => {
     .then((response) => {
       if (!response) {
         err.status = 404
-        err.message = `Team does not exist`
+        err.statusText = `Team does not exist`
         return next(err);
       } else {
         req.team = response
@@ -65,7 +65,7 @@ router.post('/', jwtVerify, (req, res, next) => {
             if (response.length > 0) {
               let err = new Error()
               err.status = 401
-              err.message = `Already on team`
+              err.statusText = `Already on team`
               return next(err);
             } else {
               let newTeamMember = {
