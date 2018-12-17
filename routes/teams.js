@@ -41,7 +41,7 @@ const addOwnerToTeam = async (req, res, next) => {
     team_id: req.team.id,
     user_id: req.team.creator_id,
   }
-  teams_usersModel.create(creator)
+  teams_usersModel.addUserToTeam(creator)
     .then(response => res.send(response))
 }
 

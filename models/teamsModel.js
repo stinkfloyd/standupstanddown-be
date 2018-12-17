@@ -28,6 +28,18 @@ const getOneTeam = (id, next) => {
     })
 }
 
+// Returns the team with the given Name
+const getOneTeamByName = (name, next) => {
+  return knex('teams')
+    .where('name', name)
+    .then((team) => {
+      return team[0]
+    })
+    .catch((err) => {
+      next(err)
+    })
+}
+
 // Edits the given ID's team name
 const editName = (id, body) => {
   console.log("body: ", body)
@@ -64,6 +76,7 @@ module.exports = {
   getAll,
   create,
   getOneTeam,
+  getOneTeamByName,
   deleteOne,
   editName,
   checkName

@@ -7,10 +7,9 @@ const jwt = require('jsonwebtoken')
 // Middleware Functions
 const verifyId = (req, res, next) => {
   let {
-    team_id,
     user_id
   } = req.params
-  if (isNaN(team_id) || isNaN(user_id)) {
+  if (isNaN(parseInt(user_id))) {
     let err = new Error()
     err.status = 401
     err.message = `Not a valid ID`
@@ -34,7 +33,7 @@ const jwtVerify = (req, res, next) => {
 }
 
 // GET ALL TEAMS 
-router.get('/', jwtVerify, (req, res, next) => {
+router.get('/', (req, res, next) => {
   teams_usersModel.getAll()
     .then(response => res.send(response))
     .catch(err => next(err))
@@ -52,26 +51,41 @@ router.get('/:team_id', (req, res, next) => {
 })
 
 // ADDS A USER TO A TEAM
-router.post('/:team_id/:user_id', verifyId, (req, res, next) => {
-  teamsModel.getOneTeam(req.params.team_id)
+router.post('/', jwtVerify, (req, res, next) => {
+  teamsModel.getOneTeamByName(req.body.team_name, next)
     .then((response) => {
-      // if (req.payload.id !== response[0].creator_id) {
-      //   let err = new Error()
-      //   err.status = 403
-      //   err.message = 'Forbidden - Not the Team Creator'
-      // } else {
-      let newUser = {
-        team_id: req.params.team_id,
-        user_id: req.params.user_id,
+      if (!response) {
+        err.status = 404
+        err.message = `Team does not exist`
+        return next(err);
+      } else {
+        teams_usersModel.checkUser(response.id, req.payload.id)
+          .then((response) => {
+            if (response) {
+              let err = new Error()
+              err.status = 401
+              err.message = `Already on team`
+              return next(err);
+            } else {
+              let newTeamMember = {
+                team_id: response.id,
+                user_id: req.payload.id
+              }
+              teams_usersModel.addUserToTeam(newTeamMember)
+                .then((response) => {
+                  res.send(response)
+                })
+                .catch((err) => {
+                  next(err)
+                })
+            }
+          })
       }
-      teams_usersModel.create(newUser)
-        .then(response => res.send(response))
-      // }
     })
-    .catch(err => next(err))
+    .catch((err) => { next(err) })
 })
 
-// DELETE A USER FROM A TEAM IF TEAM OWNER
+// DELETE A USER FROM A TEAM IF TEAM OWNER OR USER BEING DELETED
 router.delete('/:team_id/:user_id', verifyId, jwtVerify, (req, res, next) => {
 
 })

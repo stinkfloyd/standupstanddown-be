@@ -31,7 +31,7 @@ const jwtVerify = (req, res, next) => {
   })
 }
 
-// GET ALL TEAMS 
+// GET ALL USERS 
 router.get('/', (req, res, next) => {
   userModel.getAll()
     .then(response => res.send(response))
@@ -40,7 +40,7 @@ router.get('/', (req, res, next) => {
 
 // GET ONE USER
 router.get('/:id', verifyId, jwtVerify, (req, res, next) => {
-  console.log("req.payload.id:", req.payload.id )
+  console.log("req.payload.id:", req.payload.id)
   if (req.payload.id !== +(req.params.id)) {
     let err = new Error()
     err.status = 401

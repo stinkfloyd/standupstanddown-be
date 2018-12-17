@@ -6,7 +6,7 @@ exports.seed = function (knex, Promise) {
       return knex('teams').insert([
         {
           id: 1,
-          name: "The Tune Squad",
+          name: "the tune squad",
           creator_id: 1
         },
       ])
