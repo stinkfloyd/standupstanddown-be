@@ -88,10 +88,10 @@ router.post('/', jwtVerify, (req, res, next) => {
 
 // DELETE A USER FROM A TEAM IF TEAM OWNER OR USER BEING DELETED
 router.delete('/:team_id/:user_id', (req, res, next) => {
-  teamsModel.getOneTeam(req.params.team_id)
-    .then((response) => {
-      console.log(response)
-    })
+  // teamsModel.getOneTeam(req.params.team_id)
+  //   .then((response) => {
+  //     console.log(response)
+  //   })
 })
 
 module.exports = router

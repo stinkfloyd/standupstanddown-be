@@ -4,7 +4,7 @@ exports.up = (knex, Promise) => {
     table.string('yesterday', 255).notNullable().defaultTo('')
     table.string('today', 255).notNullable().defaultTo('')
     table.string('helps', 255).notNullable().defaultTo('')
-    table.integer('dayInSprint').notNullable().defaultTo(5)
+    table.integer('dayInSprint').notNullable()
     table.integer('user_id').notNullable()
     table.foreign(`user_id`).references(`users.id`).onDelete(`CASCADE`)
     table.integer('sprint_id').notNullable()

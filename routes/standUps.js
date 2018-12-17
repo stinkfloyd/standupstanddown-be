@@ -44,10 +44,12 @@ router.get('/', jwtVerify, (req, res, next) => {
     .catch(err => next(err))
 })
 
-// GET ONE standUp
-router.get('/:id', verifyId, jwtVerify, (req, res, next) => {
-  standUpsModel.getOnestandUp(req.params.id)
-    .then(response => res.send(response))
+// GET ALL STANDUPS FOR ONE SPRINT
+router.get('/:id', (req, res, next) => {
+  standUpsModel.getOneSprintsStandUps(req.params.id)
+    .then((response) => {
+      res.send(response)
+    })
     .catch(err => next(err))
 })
 

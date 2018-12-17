@@ -16,10 +16,12 @@ const create = (body) => {
 }
 
 // Returns the standups with the given team_ID
-const getOnestandUp = (id) => {
+const getOneSprintsStandUps = (id) => {
   return knex('standups')
-    .where('id', id)
-    .then(standUp => standUp[0])
+    .where('sprint_id', id)
+    .then((standUps) => {
+      return standUps
+    })
     .catch((err) => {
       Promise.reject(err)
     })
@@ -49,7 +51,7 @@ const deleteOne = (id) => {
 module.exports = {
   getAll,
   create,
-  getOnestandUp,
+  getOneSprintsStandUps,
   deleteOne,
   editName
 }
