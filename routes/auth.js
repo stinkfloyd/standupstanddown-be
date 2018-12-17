@@ -21,7 +21,8 @@ router.get('/github/callback', passport.authenticate('github'), (req, res) => {
     loggedIn: true,
   }
   let token = jwt.sign(payLoad, process.env.TOKEN_SECRET)
-  res.cookie("token", token, {
+  res.cookie("token", token, 'http://localhost:8080/', {
+    domain: 'http://localhost:8080/',
     expires: new Date(Date.now() + 900000 * 4 * 24) // 24 hours
   })
   res.redirect('http://localhost:8080/');
