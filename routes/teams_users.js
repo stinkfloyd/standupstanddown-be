@@ -59,16 +59,17 @@ router.post('/', jwtVerify, (req, res, next) => {
         err.message = `Team does not exist`
         return next(err);
       } else {
+        req.team = response
         teams_usersModel.checkUser(response.id, req.payload.id)
           .then((response) => {
-            if (response) {
+            if (response.length > 0) {
               let err = new Error()
               err.status = 401
               err.message = `Already on team`
               return next(err);
             } else {
               let newTeamMember = {
-                team_id: response.id,
+                team_id: req.team.id,
                 user_id: req.payload.id
               }
               teams_usersModel.addUserToTeam(newTeamMember)
@@ -86,8 +87,11 @@ router.post('/', jwtVerify, (req, res, next) => {
 })
 
 // DELETE A USER FROM A TEAM IF TEAM OWNER OR USER BEING DELETED
-router.delete('/:team_id/:user_id', verifyId, jwtVerify, (req, res, next) => {
-
+router.delete('/:team_id/:user_id', (req, res, next) => {
+  teamsModel.getOneTeam(req.params.team_id)
+    .then((response) => {
+      console.log(response)
+    })
 })
 
 module.exports = router
