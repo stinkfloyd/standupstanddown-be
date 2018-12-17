@@ -31,7 +31,6 @@ app.use(function (req, res, next) {
   next();
 });
 
-
 // Middleware to initizilize passport & session
 app.use(passport.initialize())
 app.use(passport.session())
@@ -42,7 +41,7 @@ app.use('/auth', authRouter)
 app.use('/teams', teamsRouter)
 app.use('/teams_users', teams_usersRouter)
 app.use('/sprints', sprintsRouter)
-app.use('/standUps', standUpsRouter)
+app.use('/standups', standUpsRouter)
 
 // Error Handling Below
 app.use((err, req, res, next) => {
