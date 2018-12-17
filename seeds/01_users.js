@@ -24,6 +24,36 @@ exports.seed = function (knex, Promise) {
           bio: "I like to write code and help cartoon characters win basketball games against aliens",
           githubId: "2"
         },
+        {
+          id: 3,
+          firstName: "",
+          lastName: "",
+          username: "torizoemitchell",
+          email: "",
+          photo: "https://avatars3.githubusercontent.com/u/41760027?v=4",
+          bio: "",
+          githubId: "41760027"
+        },
+        {
+          id: 4,
+          firstName: "",
+          lastName: "",
+          username: "stinkfloyd",
+          email: "",
+          photo: "https://avatars0.githubusercontent.com/u/39163220?s=460&v=4",
+          bio: "",
+          githubId: "39163220"
+        },
+        {
+          id: 5,
+          firstName: "",
+          lastName: "",
+          username: "rafischer1",
+          email: "",
+          photo: "https://avatars3.githubusercontent.com/u/39342327?s=400&v=4",
+          bio: "",
+          githubId: "39342327"
+        },
       ])
         .then(function () {
           // Moves id column (PK) auto-incrementer to correct value after inserts

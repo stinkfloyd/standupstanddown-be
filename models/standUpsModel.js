@@ -1,26 +1,25 @@
 const knex = require('../knex')
 
-// Gets all teams in the database
 const getAll = () => {
-  return knex('dailies')
-    .then(dailies => dailies)
+  return knex('standups')
+    .then(standUps => standUps)
     .catch(err => Promise.reject(err))
 }
 
-// Creates a team from the given object
+// Creates a stand up for a given member
 const create = (body) => {
-  return knex('dailies')
+  return knex('standups')
     .insert(body)
     .returning('*')
-    .then(daily => daily[0])
+    .then(standUp => standUp[0])
     .catch(err => Promise.reject(err))
 }
 
-// Returns the team with the given ID
-const getOneDaily = (id) => {
-  return knex('dailies')
+// Returns the standups with the given team_ID
+const getOnestandUp = (id) => {
+  return knex('standups')
     .where('id', id)
-    .then(daily => daily[0])
+    .then(standUp => standUp[0])
     .catch((err) => {
       Promise.reject(err)
     })
@@ -29,28 +28,28 @@ const getOneDaily = (id) => {
 // Edits the given ID's team name
 const editName = (id, body) => {
   console.log("body: ", body)
-  return knex('dailies')
+  return knex('standups')
     .where('id', id)
     .update(body)
     .returning('*')
-    .then(daily => daily[0])
+    .then(standUp => standUp[0])
     .catch(err => Promise.reject(err))
 }
 
 // Deletes a team with the given ID
 const deleteOne = (id) => {
-  return knex('dailies')
+  return knex('standups')
     .where('id', id)
     .del()
     .returning('*')
-    .then(daily => daily[0])
+    .then(standUp => standUp[0])
     .catch(err => Promise.reject(err))
 }
 
 module.exports = {
   getAll,
   create,
-  getOneDaily,
+  getOnestandUp,
   deleteOne,
   editName
 }

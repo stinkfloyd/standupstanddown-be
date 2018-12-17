@@ -12,6 +12,19 @@ exports.seed = function (knex, Promise) {
           team_id: 1,
           user_id: 2
         },
+        {
+          team_id: 1,
+          user_id: 3
+        },
+        {
+          team_id: 1,
+          user_id: 4
+        },
+        {
+          team_id: 1,
+          user_id: 5
+        },
+
       ])
     })
 };
