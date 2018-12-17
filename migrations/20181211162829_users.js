@@ -4,7 +4,7 @@ exports.up = function (knex, Promise) {
     table.increments() // This is the id, auto-increments
     table.string('firstName', 255).notNullable().defaultTo('')
     table.string('lastName', 255).notNullable().defaultTo('')
-    table.string('username', 255).notNullable().defaultTo('')
+    table.string('username', 255).notNullable().defaultTo('').unique()
     table.string('email', 255).notNullable().defaultTo('')
     // This needs testing.
     table.string('photo', 255).notNullable().defaultTo('')

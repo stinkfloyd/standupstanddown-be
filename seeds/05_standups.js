@@ -9,7 +9,7 @@ exports.seed = function (knex, Promise) {
           yesterday: "I created the db for products being reviewed.",
           today: "I plan to determine what data we need to migrate.",
           helps: "Anyone familiar with the reqs for writing reviews?",
-          user_id: 1,
+          username: "LBunny",
           sprint_id: 1,
           dayInSprint: 1
         },
@@ -18,7 +18,7 @@ exports.seed = function (knex, Promise) {
           yesterday: "I drew up some wireframes for the product review module.",
           today: "I pan to get consensus and begin building the review center component.",
           helps: "I'll need a 15 min meeting before lunch to present the wireframes to the team.",
-          user_id: 2,
+          username: "MJordan",
           sprint_id: 1,
           dayInSprint: 1
         },
@@ -27,7 +27,7 @@ exports.seed = function (knex, Promise) {
           yesterday: "I met with MJ and determined the reqs for reviews.",
           today: "I will write the migrations for the product review tables.",
           helps: "N/A.",
-          user_id: 1,
+          username: "LBunny",
           sprint_id: 1,
           dayInSprint: 2
         },
