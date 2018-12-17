@@ -12,6 +12,7 @@ const authRouter = require('./routes/auth')
 const usersRouter = require('./routes/users')
 const teamsRouter = require('./routes/teams')
 const teams_usersRouter = require('./routes/teams_users')
+const user_teamsRouter = require('./routes/user_teams')
 const sprintsRouter = require('./routes/sprints')
 const standUpsRouter = require('./routes/standUps')
 
@@ -40,6 +41,7 @@ app.use('/users', usersRouter);
 app.use('/auth', authRouter)
 app.use('/teams', teamsRouter)
 app.use('/teams_users', teams_usersRouter)
+app.use('/user_teams', user_teamsRouter)
 app.use('/sprints', sprintsRouter)
 app.use('/standups', standUpsRouter)
 
