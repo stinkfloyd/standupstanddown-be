@@ -1,15 +1,14 @@
 const knex = require('../knex')
 
-
 const getAll = () => {
-  return knex('standUps')
+  return knex('standups')
     .then(standUps => standUps)
     .catch(err => Promise.reject(err))
 }
 
 // Creates a stand up for a given member
 const create = (body) => {
-  return knex('standUps')
+  return knex('standups')
     .insert(body)
     .returning('*')
     .then(standUp => standUp[0])
@@ -18,7 +17,7 @@ const create = (body) => {
 
 // Returns the standups with the given team_ID
 const getOnestandUp = (id) => {
-  return knex('standUps')
+  return knex('standups')
     .where('id', id)
     .then(standUp => standUp[0])
     .catch((err) => {
@@ -29,7 +28,7 @@ const getOnestandUp = (id) => {
 // Edits the given ID's team name
 const editName = (id, body) => {
   console.log("body: ", body)
-  return knex('standUps')
+  return knex('standups')
     .where('id', id)
     .update(body)
     .returning('*')
@@ -39,7 +38,7 @@ const editName = (id, body) => {
 
 // Deletes a team with the given ID
 const deleteOne = (id) => {
-  return knex('standUps')
+  return knex('standups')
     .where('id', id)
     .del()
     .returning('*')
