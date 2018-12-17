@@ -85,7 +85,7 @@ router.get('/:id', verifyId, jwtVerify, (req, res, next) => {
 })
 
 // POST A TEAM TO THE DATABASE
-router.post('/:name', checkName, jwtVerify, (req, res, next) => {
+router.post('/:name', checkName, (req, res, next) => {
   if (req.team) {
     let err = new Error()
     err.status = 401
