@@ -30,7 +30,7 @@ const getOneSprintsStandUps = (id) => {
 }
 
 // Edits the given ID's team name
-const editName = (id, body) => {
+const edit = (id, body) => {
   console.log("body: ", body)
   return knex('standups')
     .where('id', id)
@@ -55,5 +55,5 @@ module.exports = {
   create,
   getOneSprintsStandUps,
   deleteOne,
-  editName
+  edit
 }

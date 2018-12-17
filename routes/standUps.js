@@ -37,4 +37,20 @@ router.post('/:sprint_id', (req, res, next) => {
     })
 })
 
+// EDIT A POSTED STANDUP TO THE SPRINT WITH THE GIVEN ID
+router.put('/:sprint_id', (req, res, next) => {
+  let edittedStandUp = {
+    yesterday: req.body.yesterday,
+    today: req.body.today,
+    helps: req.body.helps,
+    dayInSprint: req.body.dayInSprint,
+    sprint_id: req.params.sprint_id,
+    user_id: req.body.user_id,
+  }
+  standUpsModel.edit(edittedStandUp)
+    .then((response) => {
+      console.log("standUpsModel.edit response: ", response)
+      res.send(response)
+    })
+})
 module.exports = router
