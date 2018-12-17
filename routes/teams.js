@@ -72,14 +72,7 @@ router.post('/new_member/:name', checkName, jwtVerify, (req, res, next) => {
 router.get('/:id', verifyId, jwtVerify, (req, res, next) => {
   teamModel.getOneTeam(req.params.id, next)
     .then(response => {
-      if (req.payload.id !== response.creator_id) {
-        let err = new Error()
-        err.status = 401
-        err.message = `Unauthorized - Not Team Creator`
-        return next(err);
-      } else {
-        res.send(response)
-      }
+      res.send(response)
     })
     .catch(err => next(err))
 })

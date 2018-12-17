@@ -45,7 +45,7 @@ router.get('/', (req, res, next) => {
 })
 
 // Gets all the sprints associated with the given team_id
-router.get('/:team_id', verifyId, jwtVerify, (req, res, next) => {
+router.get('/:team_id', verifyId, (req, res, next) => {
   sprintsModel.getOneTeamsSprints(req.params.team_id)
     .then((response) => {
       res.send(response)
