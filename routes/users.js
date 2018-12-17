@@ -40,13 +40,6 @@ router.get('/', (req, res, next) => {
 
 // GET ONE USER
 router.get('/:id', verifyId, (req, res, next) => {
-  console.log("req.payload.id:", req.payload.id)
-  if (req.payload.id !== +(req.params.id)) {
-    let err = new Error()
-    err.status = 401
-    err.message = "Unauthorized - Cannot request other users"
-    return next(err)
-  }
   userModel.getOneUser(req.params.id)
     .then(((response) => {
       return res.send(response)
