@@ -34,24 +34,14 @@ const jwtVerify = (req, res, next) => {
 
 // GET ONE USERS TEAMS
 router.get('/:user_id', (req, res, next) => {
-  let arrayOfTeams = []
   user_teamsModel.getOneUser(req.params.user_id)
     .then((response) => {
-      console.log("response before array: ", response)
-      response.forEach(async (team) => {
-        console.log("team: ", team)
-        await teamsModel.getOneTeam(team.team_id, next)
-          .then((response) => {
-            console.log("response before push: ", response.name)
-            arrayOfTeams.push(response.name)
-          })
-          .catch(err => next(err))
-        res.send(arrayOfTeams)
-      })
+      res.send(response)
     })
     .catch(err => {
       next(err)
     })
+
 })
 
 module.exports = router
