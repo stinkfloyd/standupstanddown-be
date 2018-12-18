@@ -29,6 +29,19 @@ const getOneSprintsStandUps = (id) => {
     })
 }
 
+// Returns the standups with the given team_ID
+const getOneStandup = (sprint_id, dayInSprint) => {
+  return knex('standups')
+    .where('sprint_id', sprint_id)
+    .andWhere('dayInSprint', '=', dayInSprint)
+    .then((standUp) => {
+      return standUp
+    })
+    .catch((err) => {
+      Promise.reject(err)
+    })
+}
+
 // Edits the given ID's team name
 const edit = (id, body) => {
   console.log("body: ", body)
@@ -55,5 +68,6 @@ module.exports = {
   create,
   getOneSprintsStandUps,
   deleteOne,
-  edit
+  edit,
+  getOneStandup
 }

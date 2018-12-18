@@ -20,6 +20,15 @@ router.get('/:team_id', (req, res, next) => {
     .catch(err => next(err))
 })
 
+// GET ONE STANDUP FOR ONE SPRINT
+router.get('/:team_id/:day', (req, res, next) => {
+  standUpsModel.getOneStandup(req.params.team_id, req.params.day)
+    .then((response) => {
+      res.send(response)
+    })
+    .catch(err => next(err))
+})
+
 // POST A STANDUP TO THE SPRINT WITH THE GIVEN ID
 router.post('/:sprint_id', (req, res, next) => {
   let newStandUp = {
